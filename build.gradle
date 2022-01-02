@@ -1,0 +1,51 @@
+plugins {
+    id 'java'
+    id 'org.jetbrains.intellij' version '1.3.0'
+    id "com.diffplug.spotless" version "6.1.0"
+}
+
+group 'com.uptosmth'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+}
+
+// See https://github.com/JetBrains/gradle-intellij-plugin/
+intellij {
+    version = '2021.3'
+}
+patchPluginXml {
+    changeNotes = """
+      Initial release
+      """
+}
+spotless {
+    format 'misc', {
+        target '**/*.gradle', '**/*.md', '**/.gitignore'
+
+        trimTrailingWhitespace()
+        indentWithSpaces()
+        endWithNewline()
+    }
+
+    java {
+        trimTrailingWhitespace()
+        indentWithSpaces()
+        endWithNewline()
+
+        googleJavaFormat('1.1').aosp()
+
+        importOrder 'java', 'javax', 'org', 'com'
+
+        removeUnusedImports()
+    }
+}
+test {
+    useJUnitPlatform()
+}

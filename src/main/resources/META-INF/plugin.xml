@@ -1,0 +1,31 @@
+<idea-plugin>
+    <id>com.uptosmth.jetbrains-chronos</id>
+    <name>Chronos</name>
+    <vendor email="vti@uptosmth.com" url="https://uptosmth.com">UPTOSMTH OÜ</vendor>
+
+    <description><![CDATA[
+    Chronos is an Open Source time tracker. Activity is sent to the local service for aggregation and reports.
+    ]]></description>
+
+    <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationService serviceImplementation="com.uptosmth.chronos.jetbrains.settings.ChronosSettings"/>
+        <applicationConfigurable parentId="tools" instance="com.uptosmth.chronos.jetbrains.settings.ChronosSettingsConfigurable"
+                                 id="com.uptosmth.ProjectSettingsConfigurable" displayName="Chronos"
+                                 nonDefaultProject="true"/>
+
+        <notificationGroup id="notification" displayType="BALLOON" />
+
+        <applicationService serviceImplementation="com.uptosmth.chronos.jetbrains.ChronosService"/>
+    </extensions>
+
+    <applicationListeners>
+        <listener class="com.uptosmth.chronos.jetbrains.listeners.ChronosProjectManagerListener"
+                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
+        <listener class="com.uptosmth.chronos.jetbrains.listeners.ChronosVfsListener"
+                  topic="com.intellij.openapi.vfs.newvfs.BulkFileListener"/>
+    </applicationListeners>
+</idea-plugin>
